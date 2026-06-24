@@ -1,0 +1,30 @@
+{
+  "name": "wiki-plugin-family",
+  "version": "0.2.0",
+  "description": "Federated Wiki - Family Plugin — gather configurable families of related wiki sites (sisters, parent, children, farm, neighbourhood) into your neighborhood",
+  "type": "module",
+  "main": "client/family.js",
+  "files": [
+    "client",
+    "pages",
+    "server",
+    "factory.json"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "keywords": [
+    "family",
+    "wiki",
+    "federated wiki",
+    "plugin",
+    "neighborhood",
+    "sisters"
+  ],
+  "author": "David Bovill",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

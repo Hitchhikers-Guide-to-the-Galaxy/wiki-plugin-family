@@ -1,0 +1,4 @@
+node_modules/
+meta-client.json
+*.log
+.DS_Store
