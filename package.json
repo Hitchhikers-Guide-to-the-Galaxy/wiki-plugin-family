@@ -1,6 +1,6 @@
 {
   "name": "wiki-plugin-family",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Federated Wiki - Family Plugin — gather configurable families of related wiki sites (sisters, parent, children, farm, neighbourhood) into your neighborhood",
   "type": "module",
   "main": "client/family.js",
@@ -26,5 +26,13 @@
   "dependencies": {},
   "devDependencies": {
     "esbuild": "^0.25.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hitchhikers-Guide-to-the-Galaxy/wiki-plugin-family.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hitchhikers-Guide-to-the-Galaxy/wiki-plugin-family/issues"
+  },
+  "homepage": "https://github.com/Hitchhikers-Guide-to-the-Galaxy/wiki-plugin-family#readme"
 }
