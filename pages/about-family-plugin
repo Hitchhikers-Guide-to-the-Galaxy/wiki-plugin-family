@@ -14,7 +14,7 @@
     {
       "type": "markdown",
       "id": "625ddc4e896c6e27",
-      "text": "Write one **command** per line (UPPERCASE, an optional trailing colon — see the [[Fedwiki DSL Skill]] convention):\n\n- `FAMILY` — `PARENT` and `SISTERS` together (shorthand)\n- `SISTERS` — sibling sites sharing the parent domain\n- `PARENT` — the parent-domain site itself\n- `CHILDREN` — sub-domains of this site\n- `FARM` — every wiki in the farm\n- `NEIGHBOURHOOD` — the sites currently in your neighborhood\n- `SNAPSHOT` — freeze the current neighborhood *(same as NEIGHBOURHOOD)*"
+      "text": "Write one **command** per line (UPPERCASE, an optional trailing colon — see the [[Fedwiki DSL Skill]] convention):\n\n- `FAMILY` — `PARENT` and `SISTERS` together (shorthand)\n- `SISTERS` — sibling sites sharing the parent domain\n- `PARENT` — the parent-domain site itself\n- `CHILDREN` — sub-domains of this site\n- `FARM` — every wiki in the farm\n- `NEIGHBOURHOOD` — the sites currently in your neighborhood\n- `SNAPSHOT` — freeze the current neighborhood *(same as NEIGHBOURHOOD)*\n\nAnd one **action** (not a site-kind):\n\n- `FREEZE` — show a button that saves the gathered family as a **roster ghost page** (one roster item per kind), so an ephemeral panel becomes a forkable page."
     },
     {
       "type": "markdown",
@@ -63,6 +63,16 @@
       "date": 1782310000000,
       "provenance": "Authored by an AI agent — Claude Code (claude-opus-4-8) following the fedwiki-create-plugin skill.",
       "plugin": "family"
+    },
+    {
+      "type": "edit",
+      "id": "625ddc4e896c6e27",
+      "item": {
+        "type": "markdown",
+        "id": "625ddc4e896c6e27",
+        "text": "Write one **command** per line (UPPERCASE, an optional trailing colon — see the [[Fedwiki DSL Skill]] convention):\n\n- `FAMILY` — `PARENT` and `SISTERS` together (shorthand)\n- `SISTERS` — sibling sites sharing the parent domain\n- `PARENT` — the parent-domain site itself\n- `CHILDREN` — sub-domains of this site\n- `FARM` — every wiki in the farm\n- `NEIGHBOURHOOD` — the sites currently in your neighborhood\n- `SNAPSHOT` — freeze the current neighborhood *(same as NEIGHBOURHOOD)*\n\nAnd one **action** (not a site-kind):\n\n- `FREEZE` — show a button that saves the gathered family as a **roster ghost page** (one roster item per kind), so an ephemeral panel becomes a forkable page."
+      },
+      "date": 1782642651716
     }
   ],
   "plugin": "family"

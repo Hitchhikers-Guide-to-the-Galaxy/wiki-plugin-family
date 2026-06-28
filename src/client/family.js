@@ -13,6 +13,10 @@
 //   farm           every wiki in the farm                    (server)
 //   neighbourhood  the sites currently in your neighborhood  (client)
 //   snapshot       freeze the current neighborhood           (client, v0.1 == neighbourhood)
+//
+// Action (not a site-kind):
+//   FREEZE         show a button that saves the gathered family as a roster
+//                  ghost page (one roster item per kind). Read-side, no server.
 
 const SERVER_KINDS = ['sisters', 'parent', 'children', 'farm']
 const CLIENT_KINDS = ['neighbourhood', 'snapshot']
@@ -67,6 +71,15 @@ const COMMANDS = {
   SNAPSHOT: 'snapshot',
 }
 
+// FREEZE is an action, not a site-kind: when present the panel shows a Freeze
+// button that turns the gathered family into a saved roster ghost page (the
+// panel is otherwise ephemeral). Parsed separately so it never pollutes kinds.
+const parseFreeze = text =>
+  (text || '').split('\n').some(raw => {
+    const key = raw.trim().split(/\s+/)[0].replace(/:$/, '').toUpperCase()
+    return key === 'FREEZE'
+  })
+
 // item.text -> ordered, de-duplicated list of recognised kinds (default: sisters).
 // Each line: first word is the command; UPPERCASE is canonical, but input case is
 // forgiven, and a single trailing colon (YAML-style) is optional.
@@ -102,6 +115,10 @@ const groupHtml = (kind, rows) =>
 export const emit = (div, item) => {
   const suffix = portSuffix()
   const kinds = parseKinds(item.text)
+  const freeze = parseFreeze(item.text)
+  // gathered family, captured during render so the Freeze button can reuse it:
+  // kind -> ordered list of full domain names
+  const gathered = {}
 
   if (div.closest('.page').hasClass('remote')) {
     div.html(
@@ -121,6 +138,7 @@ export const emit = (div, item) => {
     for (const kind of kinds) {
       if (SERVER_KINDS.includes(kind)) {
         const roll = serverGroups[kind] || []
+        gathered[kind] = roll.map(r => r.site)
         const rows = roll.map(r => {
           wiki.neighborhoodObject.registerNeighbor(r.site + suffix)
           return rowHtml(r.site, r.pages, wiki.neighborhood[r.site + suffix]?.sitemap)
@@ -128,7 +146,9 @@ export const emit = (div, item) => {
         html.push(groupHtml(kind, rows.length ? rows : ['<tr><td><i>none</i>']))
       } else {
         // neighbourhood / snapshot — read the live in-browser neighbourhood
-        const rows = Object.keys(wiki.neighborhood).map(site => {
+        const sites = Object.keys(wiki.neighborhood)
+        gathered[kind] = sites
+        const rows = sites.map(site => {
           const sm = wiki.neighborhood[site]?.sitemap
           return rowHtml(site, sm ? sm.length : 0, sm)
         })
@@ -137,6 +157,31 @@ export const emit = (div, item) => {
     }
     div.find('.groups').html(html.join('\n'))
     div.find('.caption').first().text('just updated')
+
+    // FREEZE — turn the gathered family into a saved roster ghost page.
+    if (freeze) {
+      const short = location.hostname.split('.')[0]
+      const btn = $(
+        '<button class=family-freeze style="margin-top:8px;padding:4px 12px;' +
+        'cursor:pointer;font-size:13px">❄ Freeze</button>',
+      )
+      btn.on('click', () => {
+        const hexId = () =>
+          Math.floor(Math.random() * 0xffffffffffff).toString(16).padStart(12, '0')
+        const story = [{ type: 'markdown', id: hexId(), text: `# ${short} Family` }]
+        for (const kind of kinds) {
+          const domains = gathered[kind] || []
+          story.push({
+            type: 'roster',
+            id: hexId(),
+            text: `${LABEL[kind]} Wikis\n\n${domains.join('\n') || '(none)'}`,
+          })
+        }
+        const page = wiki.newPage({ title: `${short} Family`, story })
+        wiki.showResult(page, { $page: div.parents('.page') })
+      })
+      div.find('.family').append(btn)
+    }
 
     // fill page counts / freshness as neighbors finish loading their sitemaps
     $('body').on('new-neighbor-done', (e, site) => {
